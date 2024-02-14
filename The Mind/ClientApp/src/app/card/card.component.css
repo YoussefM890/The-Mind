@@ -1,0 +1,37 @@
+.card {
+  display: flex;
+  width: 70px;
+  height: 50px;
+  border: 1px solid #000;
+  position: relative;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease-in-out; /* Adjusted this line */
+}
+
+/* Hover effects only when the card is not marked as not playable */
+.card:not(.not-playable):hover {
+  cursor: pointer;
+  transform: scale(1.1); /* Use transform instead of zoom */
+}
+
+/* Optional: Add some styling to indicate that the card is not playable */
+.card.not-playable {
+  cursor: not-allowed;
+  color: black;
+  background-color: white;
+  /*opacity: 1; !* Example, dim the card to indicate it's not playable *!*/
+}
+
+.card-value{
+    rotate: -90deg;
+}
+.card.face-up .card-value {
+    /* Style for the face-up card, perhaps with a number and suit */
+}
+
+.card .card-back {
+    /* Style for the back of the card, which could include a background image */
+}

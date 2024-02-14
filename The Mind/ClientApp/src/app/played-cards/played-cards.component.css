@@ -1,0 +1,10 @@
+.played-cards {
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+}
+
+.card {
+  position: absolute; /* This is important to allow them to stack */
+  /* Any other styling for your cards */
+}

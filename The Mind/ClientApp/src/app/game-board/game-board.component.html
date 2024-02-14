@@ -1,0 +1,9 @@
+<div class="game-board">
+  <!-- Use an Angular ngFor directive to iterate over the players array -->
+  <div *ngFor="let player of players; let i = index"
+       [ngStyle]="getPlayerStyle(i)"
+       class="player-container">
+    <app-player [cards]="player.cards" [playerPosition]="i" [playerRotation] ="getPlayerRotation(i)"></app-player>
+  </div>
+  <app-played-cards [playedCards]="getPlayedCards()"></app-played-cards>
+</div>
