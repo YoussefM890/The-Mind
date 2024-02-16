@@ -1,0 +1,14 @@
+<!-- login.component.html -->
+<mat-card>
+  <form (submit)="joinRoom()" [formGroup]="form">
+    <mat-form-field appearance="fill">
+      <mat-label>Enter your name</mat-label>
+      <input
+        matInput
+        name="userName"
+        formControlName = "userName"
+        required>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Join Room</button>
+  </form>
+</mat-card>

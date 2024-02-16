@@ -1,3 +1,9 @@
+
+<mat-toolbar color="primary" class="d-flex justify-content-between">
+  <span>{{playerName}} {{isAdmin}}</span>
+  <button mat-raised-button color="accent" (click)="startGame()" *ngIf="isAdmin || true">Start Game</button>
+</mat-toolbar>
+
 <div class="game-board">
   <!-- Use an Angular ngFor directive to iterate over the players array -->
   <div *ngFor="let player of players; let i = index"

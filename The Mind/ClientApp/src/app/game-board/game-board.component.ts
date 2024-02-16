@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Player, PLAYERS} from "../models/class/player";
 import {Card, CARDS} from "../models/class/card";
 import {GameService} from "../services/game.service";
+import {SignalrService} from "../services/signal-r.service";
+import {Role} from "../models/enum/role";
 
 @Component({
   selector: 'app-game-board',
@@ -13,13 +15,19 @@ export class GameBoardComponent implements OnInit {
   horizontalRadius: number
   verticalRadius: number
   ratio: number = 1/3
-  constructor(private gameService: GameService) {
+  role : Role
+  playerName : string = null
+  constructor(private gameService: GameService,
+              private signalrService : SignalrService
+  ) {
     this.verticalRadius = window.innerHeight * this.ratio;
     this.horizontalRadius = window.innerWidth * this.ratio;
   }
   ngOnInit(): void {
     this.gameService.initializeGame(4)
     this.players = this.gameService.getPlayers()
+    this.role = this.signalrService.role
+    this.playerName = this.signalrService.playerName
   }
   // playCard(card: Card): void {
   //   this.gameService.playCard(card);
@@ -54,6 +62,11 @@ export class GameBoardComponent implements OnInit {
   getPlayedCards() {
     return this.gameService.getPlayedCards();
   }
-
+  startGame() {
+    this.signalrService.startGame()
+  }
+  get isAdmin() {
+    return this.role === Role.Admin
+  }
 
 }

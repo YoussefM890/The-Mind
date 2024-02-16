@@ -1,4 +1,6 @@
 using The_Mind;
+using The_Mind.Controllers;
+using The_Mind.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 //cors
@@ -14,6 +16,7 @@ builder.Services.AddCors(options =>
         );
 });
 // Add services to the container.
+builder.Services.AddSingleton<GameService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR(); // Add this line to add SignalR services
 

@@ -1,0 +1,6 @@
+/* login.component.css */
+mat-card {
+  margin: auto;
+  max-width: 400px;
+  padding: 20px;
+}
