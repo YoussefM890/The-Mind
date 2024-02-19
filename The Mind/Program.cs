@@ -1,4 +1,3 @@
-using The_Mind;
 using The_Mind.Controllers;
 using The_Mind.Services;
 
@@ -10,10 +9,7 @@ builder.Services.AddCors(options =>
         builder => builder.WithOrigins("http://localhost:4200")
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .AllowCredentials()
-            // .AllowAnyOrigin()
-        
-        );
+            .AllowCredentials());
 });
 // Add services to the container.
 builder.Services.AddSingleton<GameService>();
@@ -30,6 +26,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
+app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseRouting();
 
@@ -42,7 +39,3 @@ app.MapControllerRoute(
 app.MapFallbackToFile("index.html");
 
 app.Run();
-
-
-
-
