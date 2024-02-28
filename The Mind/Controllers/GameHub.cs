@@ -15,11 +15,16 @@ public class GameHub : Hub
 
     public override async Task OnConnectedAsync()
     {
-        Console.WriteLine("tried connection to the game!");
         await Clients.Caller.SendAsync("ReceiveMessage", "Connected to the game!");
         await base.OnConnectedAsync();
     }
 
+    public override async Task OnDisconnectedAsync(Exception exception)
+    {
+        Console.WriteLine(Context.ConnectionId + " disconnected!");
+        _gameService.UnregisterPlayer(Context.ConnectionId);
+        await base.OnDisconnectedAsync(exception);
+    }
 
     public async Task RegisterPlayer(string name)
     {
@@ -27,21 +32,15 @@ public class GameHub : Hub
         {
             Console.WriteLine("RegisterPlayer called!" + name);
             Player player = _gameService.RegisterPlayer(Context.ConnectionId, name);
-            List<Player> players = _gameService.GetAllPlayers();
-            await Clients.All.SendAsync("PlayerJoined", players);
+            Game game = _gameService.GetGame();
+            await Clients.All.SendAsync("UpdateGame", game);
             await Clients.Caller.SendAsync("ReceivePlayerData", player);
-            // await Clients.All.SendAsync("ReceiveMessage", "players list" + _gameService.GetPlayers());
+            await Clients.Caller.SendAsync("ReceiveMessage", game);
         }
         catch (Exception e)
         {
             await Clients.Caller.SendAsync("ReceiveMessage", e.Message);
         }
-    }
-
-    public override async Task OnDisconnectedAsync(Exception exception)
-    {
-        _gameService.UnregisterPlayer(Context.ConnectionId);
-        await base.OnDisconnectedAsync(exception);
     }
 
     public async Task StartGame(int level)

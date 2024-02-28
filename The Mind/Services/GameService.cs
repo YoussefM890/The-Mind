@@ -6,21 +6,26 @@ namespace The_Mind.Services;
 
 public class GameService
 {
-    private List<Card> deck = Enumerable.Range(1, 100).Select(v => new Card(v)).ToList();
+    private List<Card> deck;
 
     private bool isAdminPresent = false;
     private List<Card> playedCards = new List<Card>();
     private Dictionary<string, List<Card>> playerHands = new Dictionary<string, List<Card>>();
     private List<Player> players = new List<Player>();
 
-    public List<Player> GetAllPlayers()
-    {
-        return players;
-    }
-
     public Player GetPlayer(string connectionId)
     {
         return players.FirstOrDefault(p => p.ConnectionId == connectionId);
+    }
+
+    public Game GetGame()
+    {
+        return new Game
+        {
+            Status = GameStatus.Continue,
+            Players = players,
+            PlayedCards = playedCards
+        };
     }
 
     public bool IsAdmin(string connectionId)
@@ -30,29 +35,25 @@ public class GameService
 
     public Player RegisterPlayer(string connectionId, string name)
     {
+        Player player;
         if (players.Any(p => p.ConnectionId == connectionId))
         {
-            Player player = players.First(p => p.ConnectionId == connectionId);
+            player = players.First(p => p.ConnectionId == connectionId);
             player.Name = name;
             return player;
         }
 
         if (isAdminPresent)
         {
-            Player player = GameFunction.CreatePlayer(connectionId, name);
+            player = GameFunctions.CreatePlayer(connectionId, name);
             players.Add(player);
             return player;
         }
 
-        if (name.Equals("Youssef", StringComparison.OrdinalIgnoreCase))
-        {
-            isAdminPresent = true;
-            Player player = GameFunction.CreatePlayer(connectionId, name, Role.Admin);
-            players.Add(player);
-            return player;
-        }
-
-        throw new Exception("No admin present!");
+        player = GameFunctions.CreatePlayer(connectionId, name, Role.Admin);
+        players.Add(player);
+        isAdminPresent = true;
+        return player;
     }
 
     public void UnregisterPlayer(string connectionId)
@@ -62,35 +63,27 @@ public class GameService
             Player player = players.First(p => p.ConnectionId == connectionId);
             if (player.Role == Role.Admin)
             {
-                isAdminPresent = false;
+                if (players.Count > 1)
+                {
+                    players[1].Role = Role.Admin;
+                }
             }
 
             players.Remove(player);
         }
     }
 
-    public void ShuffleDeck()
-    {
-        Random rng = new Random();
-        int n = deck.Count;
-        while (n > 1)
-        {
-            n--;
-            int k = rng.Next(n + 1);
-            (deck[k], deck[n]) = (deck[n], deck[k]);
-        }
-    }
-
     public Game DealCards(int round = 1)
     {
+        deck = GameFunctions.InitDeck();
+        deck = GameFunctions.ShuffleDeck(deck);
         playedCards.Clear();
-        ShuffleDeck();
         int cardsToDeal = round;
-
         for (int i = 0; i < players.Count; i++)
         {
             var hand = deck.Take(cardsToDeal).ToList();
             deck.RemoveRange(0, cardsToDeal);
+            hand.Sort((card1, card2) => card1.Value.CompareTo(card2.Value)); // Sort the hand by card value
             players[i].cards = hand;
             players[i].IsTurn = i == 0; // First player's turn is set to true
         }
@@ -108,16 +101,13 @@ public class GameService
     {
         var player = players.FirstOrDefault(p => p.ConnectionId == connectionId);
         Console.WriteLine(cardValue);
-        Console.WriteLine(string.Join(", ", player.cards.Select(card => $"Card Value: {card.Value}")));
-        Console.WriteLine(string.Join(", ", players.Select(player => $"Player: {player.Name}")));
         if (player != null && player.cards.Any(c => c.Value == cardValue))
         {
             var card = player.cards.First(c => c.Value == cardValue);
             player.cards.Remove(card);
             playedCards.Add(card);
-            UpdateTurns(player);
-            var status = GetGameStatus(card);
-            // Return updated game state
+            // UpdateTurns(player);
+            var status = GameFunctions.GetGameStatus(card, players);
             return new Game
             {
                 Status = status,
@@ -129,28 +119,11 @@ public class GameService
         return null;
     }
 
-    private void UpdateTurns(Player player)
-    {
-        var currentPlayerIndex = players.IndexOf(player);
-        player.IsTurn = false;
-        int nextPlayerIndex = (currentPlayerIndex + 1) % players.Count;
-        players[nextPlayerIndex].IsTurn = true;
-    }
-
-    private GameStatus GetGameStatus(Card card)
-    {
-        if (players.Any(p => p.cards.Any(c => c.Value < card.Value)))
-        {
-            Console.WriteLine("Lost");
-            return GameStatus.Lost;
-        }
-
-        if (players.All(p => !p.cards.Any()))
-        {
-            Console.WriteLine("Won");
-            return GameStatus.Won;
-        }
-
-        return GameStatus.Continue;
-    }
+    // private void UpdateTurns(Player player)
+    // {
+    //     var currentPlayerIndex = players.IndexOf(player);
+    //     player.IsTurn = false;
+    //     int nextPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+    //     players[nextPlayerIndex].IsTurn = true;
+    // }
 }
