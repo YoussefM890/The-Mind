@@ -1,0 +1,18 @@
+
+<mat-toolbar color="primary" class="d-flex justify-content-between" *ngIf="isAdmin">
+  <span>{{currentPlayer.name}}</span>
+  <input type="number" min="1" max="10" [(ngModel)]="level" >
+  <button mat-raised-button color="accent" (click)="startGame()">Start Game</button>
+</mat-toolbar>
+
+<div class="game-board">
+  <!-- Use an Angular ngFor directive to iterate over the players array -->
+  <div *ngFor="let player of game.players; trackBy: trackById; let i = index"
+       [ngStyle]="getPlayerStyle(i)"
+       class="player-container">
+    <app-player [player]="player" [playerPosition]="i" [playerRotation]="getPlayerRotation(i)"></app-player>
+  </div>
+  <app-played-cards [playedCards]="game.playedCards"></app-played-cards>
+</div>
+<div class="end-game-message" *ngIf="game.status === GameStatus.Won">You Win</div>
+<div class="end-game-message" *ngIf="game.status === GameStatus.Lost">You Lose</div>

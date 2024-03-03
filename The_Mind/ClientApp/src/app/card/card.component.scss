@@ -1,0 +1,46 @@
+.card {
+  display: flex;
+  width: 75px; /* Increased size for better visibility */
+  height: 50px; /* Increased size for better visibility */
+  border: 3px solid orange;
+  position: relative;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom right, saddlebrown, brown);
+  cursor: pointer;
+  font-size: 40px;
+  font-weight: bold;
+  transition: transform 0.3s ease, z-index 0s;
+  color: white;
+}
+
+/* Hover effects only when the card is not marked as not playable */
+.card.playable:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  z-index: 999 !important;
+  transition: transform 0.3s ease, z-index 0s 0s; /* Immediate z-index transition on hover */
+}
+
+/* Optional: Add some styling to indicate that the card is not playable */
+.card:not(playable) {
+  cursor: not-allowed;
+  background-color: white;
+  /*opacity: 1; !* Example, dim the card to indicate it's not playable *!*/
+}
+
+.card-value{
+    rotate: -90deg;
+}
+.card.face-up .card-value {
+    /* Style for the face-up card, perhaps with a number and suit */
+}
+
+.card-back img {
+  width: 100%; /* Adjust the width as needed */
+  height: 100%; /* Adjust the height as needed */
+  object-fit: cover; /* This makes sure the image covers the area without losing its aspect ratio */
+}
+

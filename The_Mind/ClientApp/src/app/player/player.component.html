@@ -1,0 +1,20 @@
+<div class="player-area" [style.height]="getPlayerWidth(player) + 'px'">
+  <div class="cards"
+       [ngStyle] = "{'transform': 'translateY('+ (player.compressed ? (player.cards.length -1) * 15 :0) + 'px)'}"
+  >
+    <app-card
+      *ngFor="let card of player.cards;let i = index"
+      [card]="card"
+      [ngStyle]="player.compressed ? {'transform': 'translateY(' + (i * -30) + 'px)'} : {}">
+    </app-card>
+    <!-- The app-card component will need to be created as well -->
+  </div>
+  <div class="player-profile-picture"
+    [ngStyle]="{'transform' : 'rotate('+ (-playerRotation) + 'deg)'}"
+  >
+<!--    <img src="../../assets/images/profile-pictures/pp1.png" height="50" width="50"/>-->
+    <div class="initials">{{player.name.substring(0, 3).toUpperCase()}}</div>
+  </div>
+  <!-- Cards -->
+
+</div>
