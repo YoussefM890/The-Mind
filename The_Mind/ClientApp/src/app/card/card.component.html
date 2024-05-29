@@ -2,16 +2,12 @@
   class="card"
   [class.playable]="card.isPlayable"
   [class.face-up]="card.isFaceUp"
+  [class.face-down]="!card.isFaceUp"
   (click)="playCard(card)"
   [disabled]="!card.isPlayable"
 >
   <!-- Display the card value if face up -->
   <span *ngIf="card.isFaceUp" class="card-value">
     {{ card.value }}
-  </span>
-
-  <!-- Show the back of the card if face down -->
-  <span *ngIf="!card.isFaceUp" class="card-back">
-    <img src="assets/images/card_back.png" alt="card-back"/>
   </span>
 </button>

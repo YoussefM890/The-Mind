@@ -5,7 +5,6 @@ import {SignalrService} from "../services/signal-r.service";
 import {Role} from "../models/enum/role";
 import {GameStatus} from "../models/enum/game-status";
 import {dummyGame, Game} from "../models/class/game";
-
 @Component({
   selector: 'app-game-board',
   templateUrl: './game-board.component.html',
@@ -45,6 +44,7 @@ export class GameBoardComponent implements OnInit {
   setupPlayedCardsListener() {
     this.signalrService.game$.subscribe(game => {
       this.game.playedCards = game.playedCards;
+      this.currentPlayer = this.signalrService.currentPlayer
     })
   }
 

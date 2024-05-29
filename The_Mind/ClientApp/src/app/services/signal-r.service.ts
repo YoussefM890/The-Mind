@@ -5,7 +5,6 @@ import {Player} from "../models/class/player";
 import {BehaviorSubject} from "rxjs";
 import {Game} from "../models/class/game";
 import {Card} from "../models/class/card";
-import {environment} from "../../environments/environment";
 import {GameStatus} from "../models/enum/game-status";
 
 @Injectable({
@@ -20,8 +19,8 @@ export class SignalrService {
   constructor(private router: Router) {
     //if this baseurl contains localhost : change the port to 5001
     if(this.baseUrl.includes('localhost')){
-      this.baseUrl = this.baseUrl.replace('4200','5001');
-      this.baseUrl = this.baseUrl.replace('http','https');
+      this.baseUrl = this.baseUrl.replace('4200','5000');
+      // this.baseUrl = this.baseUrl.replace('http','http');
     }
   }
 
@@ -91,6 +90,7 @@ export class SignalrService {
     })
   }
   updateGame(game:Game){
+    console.log("game updated",game)
     if (game.status === GameStatus.Continue) {
       this.updatePlayers(game.players)
       this.updatePlayedCards(game.playedCards)

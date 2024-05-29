@@ -1,7 +1,13 @@
 body, html {
   margin: 0;
   padding: 0;
-  background:#251818 ;
+  background:#251818;
+}
+body{
+  box-sizing: border-box;
+}
+.m-1{
+  margin: 0.25rem;
 }
 //html, body { height: 100%; }
 //body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

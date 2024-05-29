@@ -10,7 +10,7 @@
   justify-content: center;
   background: linear-gradient(to bottom right, saddlebrown, brown);
   cursor: pointer;
-  font-size: 40px;
+  font-size: 25px;
   font-weight: bold;
   transition: transform 0.3s ease, z-index 0s;
   color: white;
@@ -34,13 +34,24 @@
 .card-value{
     rotate: -90deg;
 }
-.card.face-up .card-value {
-    /* Style for the face-up card, perhaps with a number and suit */
+
+.face-down {
+  //background : #ff4081;
+  background: linear-gradient(135deg, #2e294e, #541388, #f75990, #f3a712, #f37a24);
+  background-size: 300% 300%;
+  animation: gradientAnimation 15s ease infinite;
+  //overflow: hidden; /* Ensure any overflow is hidden */
 }
 
-.card-back img {
-  width: 100%; /* Adjust the width as needed */
-  height: 100%; /* Adjust the height as needed */
-  object-fit: cover; /* This makes sure the image covers the area without losing its aspect ratio */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 

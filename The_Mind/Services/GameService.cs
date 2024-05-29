@@ -65,11 +65,13 @@ public class GameService
         {
             Player player = players.First(p => p.ConnectionId == connectionId);
             players.Remove(player);
+            Console.WriteLine("players after remove " + string.Join(", ", players.Select(p => p.Name)));
+            Console.WriteLine("players count " + players.Count);
             if (player.Role == Role.Admin)
             {
                 if (players.Count > 0)
                 {
-                    players[1].Role = Role.Admin;
+                    players[0].Role = Role.Admin;
                 }
                 else
                 {
@@ -121,7 +123,6 @@ public class GameService
                 PlayedCards = playedCards
             };
         }
-
         return null;
     }
 

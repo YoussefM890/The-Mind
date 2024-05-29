@@ -1,8 +1,8 @@
 
 <mat-toolbar color="primary" class="d-flex justify-content-between" *ngIf="isAdmin">
-  <span>{{currentPlayer.name}}</span>
-  <input type="number" min="1" max="10" [(ngModel)]="level" >
-  <button mat-raised-button color="accent" (click)="startGame()">Start Game</button>
+  <span class="m-1">{{currentPlayer.name}}</span>
+  <input class="m-1" type="number" min="1" max="10" [(ngModel)]="level" >
+  <button class="m-1" mat-raised-button color="accent" (click)="startGame()">Start Game</button>
 </mat-toolbar>
 
 <div class="game-board">
